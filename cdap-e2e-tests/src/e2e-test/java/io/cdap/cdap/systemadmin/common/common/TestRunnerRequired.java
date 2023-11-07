@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Cask Data, Inc.
+ * Copyright © 2023 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,24 +13,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
-package io.cdap.cdap.tethering.runners;
+package io.cdap.cdap.systemadmin.common.common;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 /**
- * Test Runner to execute tethering registration related test cases.
+ * Test Runner to execute required test cases. Add @SysAdminRequired tag on the scenario.
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
   features = {"src/e2e-test/features"},
-  glue = {"io.cdap.cdap.tethering.stepsdesign", "stepsdesign"},
-  tags = {"@Skip"},
-  plugin = {"pretty", "html:target/cucumber-html-report/tethering",
-    "json:target/cucumber-reports/cucumber-tethering.json",
-    "junit:target/cucumber-reports/cucumber-tethering.xml"}
+  glue = {"stepsdesign", "io.cdap.cdap.systemadmin.common.stepsdesign"},
+  tags = {"@SysAdminRequired"},
+  plugin = {"pretty", "html:target/cucumber-html-report/required",
+    "json:target/cucumber-reports/cucumber-required.json",
+    "junit:target/cucumber-reports/cucumber-required.xml"},
+  monochrome = true
 )
-public class TestRunner {
+public class TestRunnerRequired {
 }

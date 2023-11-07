@@ -1,5 +1,5 @@
 /*
- * Copyright © 2022 Cask Data, Inc.
+ * Copyright © 2023 Cask Data, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -14,23 +14,23 @@
  * the License.
  */
 
-package io.cdap.cdap.tethering.runners;
+package io.cdap.cdap.systemadmin.runners;
 
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.runner.RunWith;
 
 /**
- * Test Runner to execute tethering registration related test cases.
+ * Test Runner to execute system admin related test cases.
  */
 @RunWith(Cucumber.class)
 @CucumberOptions(
   features = {"src/e2e-test/features"},
-  glue = {"io.cdap.cdap.tethering.stepsdesign", "stepsdesign"},
-  tags = {"@Skip"},
-  plugin = {"pretty", "html:target/cucumber-html-report/tethering",
-    "json:target/cucumber-reports/cucumber-tethering.json",
-    "junit:target/cucumber-reports/cucumber-tethering.xml"}
+  glue = {"io.cdap.cdap.systemadmin.common.stepsdesign", "stepsdesign"},
+  tags = {"@Sysadmin1"},
+  plugin = {"pretty", "html:target/cucumber-html-report/systemadmin",
+    "json:target/cucumber-reports/cucumber-systemadmin.json",
+    "junit:target/cucumber-reports/cucumber-systemadmin.xml"}
 )
 public class TestRunner {
 }
