@@ -25,6 +25,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    container:
+      image: alpine/git:2.18.0
     # We allow builds:
     # 1) When triggered manually
     # 2) When it's a merge into a branch
@@ -44,13 +46,12 @@ jobs:
       fail-fast: false
 
     steps:
-      - name: Checkout submodules
-        run: |
-            git submodule update --init --recursive
-      # Pinned 1.0.0 version
+
       - uses: actions/checkout@v3
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+            path: plugin
+            submodules: true
+            ref: ${{ github.event.workflow_run.head_sha }}
 
       - uses: dorny/paths-filter@b2feaf19c27470162a626bd6fa8438ae5b263721
         if: github.event_name != 'workflow_dispatch' && github.event_name != 'push'
