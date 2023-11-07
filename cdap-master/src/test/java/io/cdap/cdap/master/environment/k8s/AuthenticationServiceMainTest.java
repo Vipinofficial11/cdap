@@ -52,8 +52,8 @@ public class AuthenticationServiceMainTest extends MasterServiceMainTestBase {
     MasterServiceMainTestBase.cConf = cConf;
 
     final SConfiguration sConf = SConfiguration.create();
-    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PATH, "src/test/resources/KeyStore.jks");
-    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PASSWORD, "123456");
+    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PATH, "/Users/vipinbhatt/IdeaProjects/cdap-vipin-fork/cdap-common/src/main/java/io/cdap/cdap/common/security/test.jks");
+    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PASSWORD, "1234");
     MasterServiceMainTestBase.sConf = sConf;
 
     MasterServiceMainTestBase.init();

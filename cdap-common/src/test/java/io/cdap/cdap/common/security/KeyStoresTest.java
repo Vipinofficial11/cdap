@@ -17,7 +17,10 @@
 package io.cdap.cdap.common.security;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -92,7 +95,6 @@ public class KeyStoresTest {
       // Generate a keystore and write out PEM blocks
       KeyStore keystore = KeyStores.generatedCertKeyStore(KeyStores.VALIDITY, password);
       Key key = keystore.getKey(KeyStores.CERT_ALIAS, password.toCharArray());
-
       File pemFile = writePEMFile(TEMP_FOLDER.newFile(), keystore, KeyStores.CERT_ALIAS, password);
 
       // Create a keystore from the PEM file
@@ -100,6 +102,33 @@ public class KeyStoresTest {
       Assert.assertEquals(key, keystore2.getKey(KeyStores.CERT_ALIAS, password.toCharArray()));
       Assert.assertEquals(keystore.getCertificate(KeyStores.CERT_ALIAS),
                           keystore2.getCertificate(KeyStores.CERT_ALIAS));
+    }
+  }
+
+  @Test
+  public void createPEMFile() throws Exception {
+    // Write out PEM file. First without password for the key, then with password
+    for (String password : new String[] { "", "1234" }) {
+      // Generate a keystore and write out PEM blocks
+      KeyStore keystore = KeyStores.generatedCertKeyStore(KeyStores.VALIDITY, password);
+      Key key = keystore.getKey(KeyStores.CERT_ALIAS, password.toCharArray());
+      Path path = Paths.get("PATH To Your Combined.pem file");
+      File file = new File(path.toUri());
+
+      // Override the existing file content.
+      File pemFile = writePEMFile(file, keystore, KeyStores.CERT_ALIAS, password);
+
+      KeyStore keystore2 = KeyStores.createKeyStore(pemFile.toPath(), password);
+
+      String keystorePath = "PATH To KeyStore file"; // You can create an empty file with .jks extension.
+      FileOutputStream fos = new FileOutputStream(keystorePath);
+      keystore2.store(fos, password.toCharArray());
+//
+
+//      System.out.println("Key from cert" + keystore2.getKey(KeyStores.CERT_ALIAS, password.toCharArray()));
+//
+//      Assert.assertEquals(key, keystore2.getKey(KeyStores.CERT_ALIAS, password.toCharArray()));
+
     }
   }
 

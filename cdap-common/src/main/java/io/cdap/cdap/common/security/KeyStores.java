@@ -17,29 +17,22 @@
 package io.cdap.cdap.common.security;
 
 import com.google.common.hash.Hashing;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+
+import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.security.GeneralSecurityException;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.SecureRandom;
+import java.nio.file.Paths;
+import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
+
+import com.jcraft.jsch.KeyPairPKCS8;
+import io.netty.handler.ssl.PemPrivateKey;
 import org.apache.twill.filesystem.Location;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
@@ -49,6 +42,7 @@ import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.crypto.params.AsymmetricKeyParameter;
 import org.bouncycastle.crypto.util.PrivateKeyFactory;
+import org.bouncycastle.jcajce.provider.keystore.PKCS12;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMEncryptedKeyPair;
 import org.bouncycastle.openssl.PEMKeyPair;
@@ -126,6 +120,13 @@ public final class KeyStores {
     }
   }
 
+  public static void main(String[] args) throws KeyStoreException, IOException, UnrecoverableKeyException, NoSuchAlgorithmException {
+    Path path = Paths.get("cdap-common/src/main/java/io/cdap/cdap/common/security/certificate.pem");
+    KeyStore key = createKeyStore(path, "");
+
+    System.out.println(key.size());
+  }
+
   /**
    * Creates a key store from the given PEM file.
    *
@@ -148,6 +149,9 @@ public final class KeyStores {
         Files.newBufferedReader(certificatePath, StandardCharsets.ISO_8859_1))) {
       Object obj = parser.readObject();
       while (obj != null) {
+
+        System.out.println(obj);
+
         // Decrypt the key block if it is encrypted
         if (obj instanceof PEMEncryptedKeyPair) {
           obj = ((PEMEncryptedKeyPair) obj).decryptKeyPair(new BcPEMDecryptorProvider(passPhase));
@@ -168,11 +172,20 @@ public final class KeyStores {
         throw new RuntimeException("Missing private key from file " + certificatePath);
       }
 
+
       KeyStore keyStore = KeyStore.getInstance(SSL_KEYSTORE_TYPE);
       keyStore.load(null, passPhase);
+
+      System.out.println("private key : " + privateKey);
+      System.out.println("Certificate : " + Arrays.toString(certificates.toArray(new Certificate[0])));
+
       keyStore.setKeyEntry(CERT_ALIAS, privateKey, passPhase,
           certificates.toArray(new Certificate[0]));
+
+
       return keyStore;
+
+
     } catch (IOException | CertificateException | NoSuchAlgorithmException | KeyStoreException e) {
       throw new RuntimeException("Failed to create keystore from PEM file " + certificatePath, e);
     }

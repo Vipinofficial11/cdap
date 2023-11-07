@@ -242,6 +242,21 @@ public class NettyRouter extends AbstractIdleService {
         });
   }
 
+  public static void main(String[] args) {
+    SSLHandlerFactory sslHandlerFactory = null;
+    String  SSL_CERT_PASSWORD = "hdf1234";
+    String password = SSL_CERT_PASSWORD;
+    KeyStore keyStore = KeyStores.createKeyStore(Paths.get("cdap-common/src/main/java/io/cdap/cdap/common/security/combined.pem"), password);
+    sslHandlerFactory = new HttpsEnabler().setKeyStore(keyStore, password::toCharArray)
+            .createSSLHandlerFactory();
+
+    if(sslHandlerFactory == null) {
+      System.out.println("null");
+    } else {
+      System.out.println("not null");
+    }
+  }
+
   private Cancellable startServer(final ServerBootstrap serverBootstrap,
       final ChannelGroup channelGroup) throws Exception {
     // Start listening on ports.
