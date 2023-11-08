@@ -112,7 +112,7 @@ public class KeyStoresTest {
       // Generate a keystore and write out PEM blocks
       KeyStore keystore = KeyStores.generatedCertKeyStore(KeyStores.VALIDITY, password);
       Key key = keystore.getKey(KeyStores.CERT_ALIAS, password.toCharArray());
-      Path path = Paths.get("PATH To Your Combined.pem file");
+      Path path = Paths.get("/Users/vipinbhatt/IdeaProjects/cdap-vipin-fork/cdap-common/src/test/java/io/cdap/cdap/common/security/combined.pem");
       File file = new File(path.toUri());
 
       // Override the existing file content.
@@ -120,7 +120,7 @@ public class KeyStoresTest {
 
       KeyStore keystore2 = KeyStores.createKeyStore(pemFile.toPath(), password);
 
-      String keystorePath = "PATH To KeyStore file"; // You can create an empty file with .jks extension.
+      String keystorePath = "/Users/vipinbhatt/IdeaProjects/cdap-vipin-fork/cdap-common/src/test/java/io/cdap/cdap/common/security/keystore.jks"; // You can create an empty file with .jks extension.
       FileOutputStream fos = new FileOutputStream(keystorePath);
       keystore2.store(fos, password.toCharArray());
 //
@@ -131,6 +131,7 @@ public class KeyStoresTest {
 
     }
   }
+
 
   /**
    * Writes a private key and certificate pair from a KeyStore to the given PEM file.

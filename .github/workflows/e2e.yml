@@ -40,7 +40,7 @@ jobs:
           )
     strategy:
       matrix:
-        tests: [ systemadmin ]
+        tests: [ cdap-e2e-tests ]
       fail-fast: false
     steps:
       # Pinned 1.0.0 version
@@ -61,9 +61,8 @@ jobs:
       - name: Checkout e2e test repo
         uses: actions/checkout@v3
         with:
-          repository: Vipinofficial11/cdap-e2e-tests
+          repository: cdapio/cdap-e2e-tests
           path: e2e
-          ref: addPluginUploadSkipFlag
 
       - name: Cache
         uses: actions/cache@v3
@@ -86,7 +85,7 @@ jobs:
         if: always()
         with:
           name: Cucumber report - ${{ matrix.tests }}
-          path: ./plugin/target/cucumber-reports
+          path: ./plugin/${{ matrix.tests }}/target/cucumber-reports
 
       - name: Upload debug files
         uses: actions/upload-artifact@v3

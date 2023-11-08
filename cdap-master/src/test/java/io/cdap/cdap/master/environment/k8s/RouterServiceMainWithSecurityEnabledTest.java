@@ -45,8 +45,8 @@ public class RouterServiceMainWithSecurityEnabledTest extends MasterServiceMainT
     MasterServiceMainTestBase.cConf = cConf;
 
     final SConfiguration sConf = SConfiguration.create();
-    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PATH, "src/test/resources/KeyStore.jks");
-    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PASSWORD, "123456");
+    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PATH, "src/test/resources/ks.jks");
+    sConf.set(Security.AuthenticationServer.SSL_KEYSTORE_PASSWORD, "1234");
     MasterServiceMainTestBase.sConf = sConf;
 
     MasterServiceMainTestBase.init();
@@ -64,8 +64,11 @@ public class RouterServiceMainWithSecurityEnabledTest extends MasterServiceMainT
   @Test
   public void testRouterServiceWithAuthenticationEnabled() throws Exception {
     URL url = getRouterBaseUri().resolve("/").toURL();
+    System.out.println("Router url : " + url);
     HttpResponse response = HttpRequests
         .execute(HttpRequest.get(url).build(), new DefaultHttpRequestConfig(false));
+
+    System.out.println("Response code : " + response.getResponseCode());
 
     Assert.assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, response.getResponseCode());
   }

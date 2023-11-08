@@ -17,7 +17,7 @@
 @Sysadmin
 Feature: Sysadmin - Validate system admin page design time scenarios
 
-  @Sysadmin @SysAdminRequired
+  @Sysadmin1
   Scenario:Validate user is able to create new system preferences and able to delete the added system preferences successfully
     Given Open Datafusion Project to configure pipeline
     When Open "System Admin" menu
