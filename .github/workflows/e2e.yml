@@ -61,8 +61,9 @@ jobs:
       - name: Checkout e2e test repo
         uses: actions/checkout@v3
         with:
-          repository: cdapio/cdap-e2e-tests
+          repository: Vipinofficial11/cdap-e2e-tests
           path: e2e
+          ref: addPluginUploadSkipFlag
 
       - name: Cache
         uses: actions/cache@v3
