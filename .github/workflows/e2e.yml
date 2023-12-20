@@ -16,9 +16,9 @@ name: Build e2e tests
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ develop, release/** ]
   pull_request:
-    branches: [ develop]
+    branches: [ develop, release/** ]
     types: [opened, synchronize, reopened, labeled]
   workflow_dispatch:
 
@@ -75,6 +75,8 @@ jobs:
 
       - name: Run required e2e tests
         if: github.event_name != 'workflow_dispatch' && github.event_name != 'push' && steps.filter.outputs.e2e-test == 'false'
+        env:
+          PR_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: python3 e2e/src/main/scripts/run_cdap_e2e_test.py --testRunner TestRunnerRequired.java
 
       - name: Run all e2e tests
