@@ -79,7 +79,7 @@ jobs:
 
       - name: Run all e2e tests
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || steps.filter.outputs.e2e-test == 'true'
-        run: python3 e2e/src/main/scripts/run_cdap_e2e_test.py --testRunner TestRunnerRequired.java
+        run: python3 e2e/src/main/scripts/run_cdap_e2e_test.py --testRunner TestRunnerRequired.java --cdapBranch "${{ github.event.pull_request.head.ref }}"
 
       - name: Upload report
         uses: actions/upload-artifact@v3
