@@ -92,7 +92,6 @@ public class KeyStoresTest {
       // Generate a keystore and write out PEM blocks
       KeyStore keystore = KeyStores.generatedCertKeyStore(KeyStores.VALIDITY, password);
       Key key = keystore.getKey(KeyStores.CERT_ALIAS, password.toCharArray());
-
       File pemFile = writePEMFile(TEMP_FOLDER.newFile(), keystore, KeyStores.CERT_ALIAS, password);
 
       // Create a keystore from the PEM file

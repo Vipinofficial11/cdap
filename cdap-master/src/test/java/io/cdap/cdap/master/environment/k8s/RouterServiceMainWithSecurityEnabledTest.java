@@ -66,7 +66,6 @@ public class RouterServiceMainWithSecurityEnabledTest extends MasterServiceMainT
     URL url = getRouterBaseUri().resolve("/").toURL();
     HttpResponse response = HttpRequests
         .execute(HttpRequest.get(url).build(), new DefaultHttpRequestConfig(false));
-
     Assert.assertEquals(HttpURLConnection.HTTP_UNAUTHORIZED, response.getResponseCode());
   }
 }
